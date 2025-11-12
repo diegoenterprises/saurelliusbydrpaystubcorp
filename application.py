@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Saurellius Platform - Main Application
-Production-ready Flask application with all routes
+FIXED: SQLAlchemy 2.0 compatibility issue resolved
 """
 
 from flask import Flask, send_from_directory, jsonify
@@ -18,6 +18,8 @@ from routes.auth import auth_bp
 from routes.paystubs import paystubs_bp
 from routes.employees import employees_bp
 from routes.dashboard import dashboard_bp
+from routes.stripe_routes import stripe_bp
+from routes.settings_routes import settings_bp
 
 # ============================================================================
 # APPLICATION FACTORY
@@ -139,6 +141,8 @@ def create_app():
     app.register_blueprint(paystubs_bp)
     app.register_blueprint(employees_bp)
     app.register_blueprint(dashboard_bp)
+    app.register_blueprint(stripe_bp)
+    app.register_blueprint(settings_bp)
     
     # ========================================================================
     # FRONTEND ROUTES
@@ -147,7 +151,7 @@ def create_app():
     @app.route('/')
     def serve_landing():
         """Serve landing/auth page"""
-        return send_from_directory('static', 'auth-pages.html')
+        return send_from_directory('static', 'index.html')
     
     @app.route('/dashboard')
     def serve_dashboard():
@@ -161,27 +165,40 @@ def create_app():
         return send_from_directory('static', filename)
     
     # ========================================================================
-    # API HEALTH CHECK
+    # API HEALTH CHECK - FIXED FOR SQLALCHEMY 2.0
     # ========================================================================
     
     @app.route('/api/health', methods=['GET'])
+    @app.route('/health', methods=['GET'])
     def health_check():
-        """Health check endpoint"""
+        """
+        Health check endpoint for AWS ELB
+        FIXED: Now uses SQLAlchemy 2.0 compatible text() function
+        """
         try:
-            # Test database connection
-            db.session.execute('SELECT 1')
+            # CRITICAL FIX: Use text() for SQLAlchemy 2.0 compatibility
+            from sqlalchemy import text
+            db.session.execute(text('SELECT 1'))
             db_status = 'healthy'
         except Exception as e:
             db_status = 'unhealthy'
             print(f"Database health check failed: {str(e)}")
+            return jsonify({
+                'status': 'unhealthy',
+                'service': 'Saurellius API',
+                'version': app.config['APP_VERSION'],
+                'database': db_status,
+                'error': str(e),
+                'environment': app.config['ENVIRONMENT']
+            }), 503
         
         return jsonify({
-            'status': 'healthy' if db_status == 'healthy' else 'degraded',
+            'status': 'healthy',
             'service': 'Saurellius API',
             'version': app.config['APP_VERSION'],
             'database': db_status,
             'environment': app.config['ENVIRONMENT']
-        }), 200 if db_status == 'healthy' else 503
+        }), 200
     
     @app.route('/api/info', methods=['GET'])
     def api_info():
@@ -331,7 +348,7 @@ if __name__ == '__main__':
     print(f"🚀 Saurellius Platform Starting...")
     print(f"📍 Environment: {os.environ.get('ENVIRONMENT', 'production')}")
     print(f"🔌 Port: {port}")
-    print(f"🐛 Debug: {debug}")
+    print(f"🛠 Debug: {debug}")
     print(f"💾 Database: {os.environ.get('DATABASE_URL', 'postgresql://localhost/saurellius')}")
     print("=" * 60)
     
