@@ -548,7 +548,6 @@ def forgot_password():
             'success': True,
             'message': 'If an account with that email exists, a password reset link has been sent.'
         }), 200
-
 @auth_bp.route('/api/auth/reset-password', methods=['POST'])
 def reset_password():
     """
@@ -674,7 +673,6 @@ def forgot_password():
             'success': False,
             'message': 'Request failed'
         }), 500
-
 
 @auth_bp.route('/api/auth/reset-password', methods=['POST'])
 def reset_password():
