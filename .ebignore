@@ -1,0 +1,14 @@
+.elasticbeanstalk/
+.git/
+.gitignore
+*.pyc
+*.log
+__pycache__/
+eb_logs/
+create_rds.py
+list_rds_versions.py
+configure_db.py
+deploy_frontend.py
+update_route53_a_record.py
+configure_route53.py
+create_cloudfront.py

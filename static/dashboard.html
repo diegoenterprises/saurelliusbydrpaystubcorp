@@ -1,0 +1,339 @@
+<!-- Due to size limits, here's a summary of changes needed for dashboard:
+
+KEY CHANGES TO MAKE:
+
+1. UPDATE API URL (Line ~2380):
+   FROM: const API_BASE_URL = window.location.origin; // Use current origin for API calls
+   TO: const API_BASE_URL = window.location.origin; // Use current origin for API calls
+
+2. ADD FOOTER BEFORE <footer style="
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    color: white;
+    padding: 3rem 2rem 1.5rem;
+    margin-top: 4rem;
+    border-top: 3px solid transparent;
+    border-image: linear-gradient(90deg, #BE01FF 0%, #1473FF 100%) 1;
+">
+    <div style="max-width: 1400px; margin: 0 auto;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+            <div>
+                <h4 style="margin-bottom: 1rem; color: #BE01FF;">Product</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Dashboard</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Employees</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Reports</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 1rem; color: #BE01FF;">Support</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Help Center</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Documentation</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 1rem; color: #BE01FF;">Legal</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Terms</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Privacy</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Security</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 1rem; color: #BE01FF;">Account</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Settings</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Billing</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#" onclick="handleLogout()" style="color: #9ca3af; text-decoration: none; cursor: pointer;">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; text-align: center;">
+            <p style="margin: 0; font-size: 0.875rem; color: #9ca3af;">
+                Saurellius by Dr. Paystub Corp™ © 2025. All rights reserved.
+            </p>
+        </div>
+    </div>
+</footer>
+</body> tag:
+```html
+<footer style="
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    color: white;
+    padding: 3rem 2rem 1.5rem;
+    margin-top: 4rem;
+    border-top: 3px solid transparent;
+    border-image: linear-gradient(90deg, #BE01FF 0%, #1473FF 100%) 1;
+">
+    <div style="max-width: 1400px; margin: 0 auto;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+            <div>
+                <h4 style="margin-bottom: 1rem; color: #BE01FF;">Product</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Dashboard</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Employees</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Reports</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 1rem; color: #BE01FF;">Support</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Help Center</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Documentation</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 1rem; color: #BE01FF;">Legal</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Terms</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Privacy</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Security</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 1rem; color: #BE01FF;">Account</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Settings</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #9ca3af; text-decoration: none;">Billing</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#" onclick="handleLogout()" style="color: #9ca3af; text-decoration: none; cursor: pointer;">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; text-align: center;">
+            <p style="margin: 0; font-size: 0.875rem; color: #9ca3af;">
+                Saurellius by Dr. Paystub Corp™ © 2025. All rights reserved.
+            </p>
+        </div>
+    </div>
+</footer>
+```
+
+3. ADD LOGOUT FUNCTION   // Logout function
+function handleLogout() {
+    if (confirm('Are you sure you want to log out?')) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        sessionStorage.removeItem('token');
+        showToast('Logged out successfully', 'success');
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 1000);
+    }
+}
+
+// Toast Notification System
+function showToast(message, type = 'info') {
+    const existingToast = document.querySelector('.toast');
+    if (existingToast) {
+        existingToast.remove();
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    
+    const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
+    const color = type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6';
+    
+    toast.innerHTML = `
+        <i class="fas \${icon}" style="color: \${color}; font-size: 1.2rem;"></i>
+        <span style="color: #374151;">\${message}</span>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'slideInRight 0.3s ease reverse';
+        setTimeout(() => toast.remove(), 300);
+    }, 5000);
+}
+
+// Check authentication
+function checkAuth() {
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    if (!token) {
+        window.location.href = '/';
+        return false;
+    }
+    return true;
+}
+
+// Run on page load
+window.addEventListener('load', function() {
+    if (!checkAuth()) return;
+    
+    // Load dashboard data
+    loadDashboardData();
+});
+</script>
+        const API_BASE_URL = window.location.origin; // Use current origin for API calls
+```javascript
+// Logout function
+function handleLogout() {
+    if (confirm('Are you sure you want to log out?')) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        sessionStorage.removeItem('token');
+        showToast('Logged out successfully', 'success');
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 1000);
+    }
+}
+```
+
+4. ADD TOAST NOTIFICATION SYSTEM:
+```javascript
+// Toast Notification System
+function showToast(message, type = 'info') {
+    const existingToast = document.querySelector('.toast');
+    if (existingToast) {
+        existingToast.remove();
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    
+    const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
+    const color = type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6';
+    
+    toast.innerHTML = `
+        <i class="fas ${icon}" style="color: ${color}; font-size: 1.2rem;"></i>
+        <span style="color: #374151;">${message}</span>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'slideInRight 0.3s ease reverse';
+        setTimeout(() => toast.remove(), 300);
+    }, 5000);
+}
+```
+
+5. ADD TOAST STYLES in/* Toast Notification Styles */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    z-index: 10000;
+    animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.toast-success {
+    border-left: 4px solid #10b981;
+}
+
+.toast-error {
+    border-left: 4px solid #ef4444;
+}
+
+.toast-info {
+    border-left: 4px solid #3b82f6;
+}
+
+</style> section:
+```css
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    z-index: 10000;
+    animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.toast-success {
+    border-left: 4px solid #10b981;
+}
+
+.toast-error {
+    border-left: 4px solid #ef4444;
+}
+
+.toast-info {
+    border-left: 4px solid #3b82f6;
+}
+```
+
+6. ADD LOGOUT BUTTON TO NAVIGATION:
+Replace the notifications button area with:
+```html
+<div class="user-menu">
+<button class="icon-btn" title="Notifications">
+    <i class="fas fa-bell"></i>
+</button>
+<button class="icon-btn" title="Settings" onclick="openSettings()">
+    <i class="fas fa-cog"></i>
+</button>
+<button class="icon-btn" title="Logout" onclick="handleLogout()">
+    <i class="fas fa-sign-out-alt"></i>
+</button>
+    <button class="icon-btn" title="Settings" onclick="openSettings()">
+        <i class="fas fa-cog"></i>
+    </button>
+    <button class="icon-btn" title="Logout" onclick="handleLogout()">
+        <i class="fas fa-sign-out-alt"></i>
+    </button>
+    <div class="user-avatar">JD</div>
+</div>
+```
+
+7. ADD SESSION CHECK:
+```javascript
+// Check authentication
+function checkAuth() {
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    if (!token) {
+        window.location.href = '/';
+        return false;
+    }
+    return true;
+}
+
+// Run on page load
+window.addEventListener('load', function() {
+    if (!checkAuth()) return;
+    
+    // Load dashboard data
+    loadDashboardData();
+});
+```
+
+-->

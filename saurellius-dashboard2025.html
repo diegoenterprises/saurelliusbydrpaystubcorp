@@ -1,0 +1,1889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saurellius - Professional Paystub Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-purple: #BE01FF;
+            --primary-blue: #1473FF;
+            --gradient-primary: linear-gradient(135deg, #BE01FF 0%, #1473FF 100%);
+            --gradient-soft: linear-gradient(135deg, rgba(190, 1, 255, 0.1) 0%, rgba(20, 115, 255, 0.1) 100%);
+            --surface: #ffffff;
+            --surface-elevated: #f8fafc;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --border: #e5e7eb;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --shadow-glow: 0 8px 32px rgba(190, 1, 255, 0.2);
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.4;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(190, 1, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(20, 115, 255, 0.15) 0%, transparent 50%);
+            animation: backgroundFloat 20s ease-in-out infinite;
+        }
+
+        @keyframes backgroundFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-purple);
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.1);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--gradient-primary);
+            border-radius: var(--radius-lg);
+            padding: 3rem;
+            margin-bottom: 2rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient-primary);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            background: var(--gradient-soft);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .trend-up {
+            color: #10b981;
+        }
+
+        .trend-down {
+            color: #ef4444;
+        }
+
+        /* Action Buttons */
+        .actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.875rem 1.75rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(190, 1, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface-elevated);
+            transform: translateY(-2px);
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Card Component */
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-title i {
+            color: var(--primary-purple);
+        }
+
+        /* Employee Grid */
+        .employee-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .employee-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: var(--surface-elevated);
+            border-radius: var(--radius-sm);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .employee-item:hover {
+            background: white;
+            border-color: var(--primary-purple);
+            transform: translateX(4px);
+        }
+
+        .employee-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            margin-right: 1rem;
+        }
+
+        .employee-info {
+            flex: 1;
+        }
+
+        .employee-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .employee-role {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .employee-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            background: var(--surface-elevated);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-btn:hover {
+            background: var(--gradient-primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Rewards Progress */
+        .rewards-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rewards-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        }
+
+        .rewards-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .tier-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .points-display {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: white;
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        /* Recent Activity */
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--surface-elevated);
+            border-radius: var(--radius-sm);
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:hover {
+            background: white;
+            transform: translateX(4px);
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-soft);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-purple);
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .activity-time {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Paystub Generator Form */
+        .generator-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-section {
+            background: var(--surface-elevated);
+            padding: 1.5rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .form-section-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .form-input, .form-select {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 3px rgba(190, 1, 255, 0.1);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .close-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: var(--surface-elevated);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            background: #fee2e2;
+            color: #dc2626;
+            transform: rotate(90deg);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .hero {
+                padding: 2rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-hexagon" style="font-size: 2rem;"></i>
+                <span>Saurellius</span>
+            </div>
+            <div class="nav-links">
+                <a href="#dashboard" class="active">Dashboard</a>
+                <a href="#employees">Employees</a>
+                <a href="#reports">Reports</a>
+                <a href="#settings">Settings</a>
+            </div>
+            <div class="user-menu">
+                <button class="icon-btn" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <div class="user-avatar">JD</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Welcome back, John! 👋</h1>
+                <p>Your payroll dashboard is ready. Generate paystubs, manage employees, and track your rewards.</p>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </div>
+                </div>
+                <div class="stat-value">47</div>
+                <div class="stat-label">Total Paystubs</div>
+                <div class="stat-trend trend-up">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>12% from last month</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                </div>
+                <div class="stat-value">$284,450</div>
+                <div class="stat-label">YTD Gross Pay</div>
+                <div class="stat-trend trend-up">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>8.2% increase</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <div class="stat-value">12</div>
+                <div class="stat-label">Active Employees</div>
+                <div class="stat-trend trend-up">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>2 new this month</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                </div>
+                <div class="stat-value">Jan 20</div>
+                <div class="stat-label">Next Pay Date</div>
+                <div class="stat-trend">
+                    <i class="fas fa-clock"></i>
+                    <span>In 5 days</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="actions">
+            <button class="btn btn-primary" onclick="openGenerator()">
+                <i class="fas fa-plus"></i>
+                Generate Paystub
+            </button>
+            <button class="btn btn-secondary" onclick="alert('Add Employee')">
+                <i class="fas fa-user-plus"></i>
+                Add Employee
+            </button>
+            <button class="btn btn-secondary" onclick="alert('View Reports')">
+                <i class="fas fa-chart-line"></i>
+                View Reports
+            </button>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Left Column -->
+            <div>
+                <!-- Employees Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-users"></i>
+                            Recent Employees
+                        </div>
+                        <a href="#" style="color: var(--primary-purple); text-decoration: none; font-weight: 600;">View All</a>
+                    </div>
+                    <div class="employee-grid">
+                        <div class="employee-item">
+                            <div class="employee-avatar">SM</div>
+                            <div class="employee-info">
+                                <div class="employee-name">Sarah Mitchell</div>
+                                <div class="employee-role">Senior Developer • CA</div>
+                            </div>
+                            <div class="employee-actions">
+                                <button class="icon-btn" title="Generate Paystub">
+                                    <i class="fas fa-file-invoice"></i>
+                                </button>
+                                <button class="icon-btn" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="employee-item">
+                            <div class="employee-avatar">MJ</div>
+                            <div class="employee-info">
+                                <div class="employee-name">Michael Johnson</div>
+                                <div class="employee-role">Product Manager • NY</div>
+                            </div>
+                            <div class="employee-actions">
+                                <button class="icon-btn" title="Generate Paystub">
+                                    <i class="fas fa-file-invoice"></i>
+                                </button>
+                                <button class="icon-btn" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="employee-item">
+                            <div class="employee-avatar">EC</div>
+                            <div class="employee-info">
+                                <div class="employee-name">Emily Chen</div>
+                                <div class="employee-role">UX Designer • TX</div>
+                            </div>
+                            <div class="employee-actions">
+                                <button class="icon-btn" title="Generate Paystub">
+                                    <i class="fas fa-file-invoice"></i>
+                                </button>
+                                <button class="icon-btn" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card" style="margin-top: 1.5rem;">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-history"></i>
+                            Recent Activity
+                        </div>
+                    </div>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-file-invoice"></i>
+                            </div>
+                            <div class="activity-details">
+                                <div class="activity-title">Paystub generated for Sarah Mitchell</div>
+                                <div class="activity-time">2 hours ago</div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="activity-details">
+                                <div class="activity-title">Earned 10 reward points</div>
+                                <div class="activity-time">5 hours ago</div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="activity-details">
+                                <div class="activity-title">New employee added: Emily Chen</div>
+                                <div class="activity-time">1 day ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div>
+                <!-- Rewards Card -->
+                <div class="card rewards-card">
+                    <div class="rewards-content">
+                        <div class="tier-badge">🥈 Silver Tier</div>
+                        <div class="points-display">2,450</div>
+                        <div class="stat-label">Reward Points</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 49%"></div>
+                        </div>
+                        <div style="margin-top: 1rem; font-size: 0.875rem; opacity: 0.9;">
+                            2,550 points until Gold Tier
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="card" style="margin-top: 1.5rem;">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-chart-pie"></i>
+                            This Month
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--surface-elevated); border-radius: 8px;">
+                            <div>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">Paystubs Generated</div>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);">8</div>
+                            </div>
+                            <i class="fas fa-file-invoice" style="font-size: 2rem; color: var(--primary-purple); opacity: 0.2;"></i>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--surface-elevated); border-radius: 8px;">
+                            <div>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">Total Processed</div>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);">$24,800</div>
+                            </div>
+                            <i class="fas fa-dollar-sign" style="font-size: 2rem; color: var(--primary-blue); opacity: 0.2;"></i>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--surface-elevated); border-radius: 8px;">
+                            <div>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">Avg. Net Pay</div>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);">$3,100</div>
+                            </div>
+                            <i class="fas fa-chart-line" style="font-size: 2rem; color: #10b981; opacity: 0.2;"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subscription Card -->
+                <div class="card" style="margin-top: 1.5rem; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: white;">
+                    <div style="position: relative; z-index: 2;">
+                        <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem;">Professional Plan</div>
+                        <div style="font-size: 0.875rem; opacity: 0.95; margin-bottom: 1rem;">15 paystubs/month • Premium templates</div>
+                        <button class="btn" style="background: white; color: #f59e0b; width: 100%; justify-content: center;">
+                            <i class="fas fa-crown"></i>
+                            Upgrade to Business
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paystub Generator Modal -->
+    <div class="modal" id="generatorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Generate Paystub</div>
+                <button class="close-btn" onclick="closeGenerator()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form class="generator-form" onsubmit="generatePaystub(event)">
+                <!-- Employee Selection -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-user"></i>
+                        Employee Information
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Select Employee *</label>
+                            <select class="form-select" id="employeeSelect" onchange="loadEmployeeData()" required>
+                                <option value="">Choose an employee...</option>
+                                <option value="1">Sarah Mitchell - Senior Developer</option>
+                                <option value="2">Michael Johnson - Product Manager</option>
+                                <option value="3">Emily Chen - UX Designer</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">State *</label>
+                            <select class="form-select" id="stateSelect" onchange="updateStateFields()" required>
+                                <option value="">Select state...</option>
+                                <option value="CA">California</option>
+                                <option value="NY">New York</option>
+                                <option value="TX">Texas</option>
+                                <option value="FL">Florida</option>
+                                <option value="WA">Washington</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pay Period -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-calendar"></i>
+                        Pay Period
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Period Start *</label>
+                            <input type="date" class="form-input" id="periodStart" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Period End *</label>
+                            <input type="date" class="form-input" id="periodEnd" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Pay Date *</label>
+                            <input type="date" class="form-input" id="payDate" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Earnings -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-dollar-sign"></i>
+                        Earnings
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Regular Hours</label>
+                            <input type="number" class="form-input" id="regularHours" step="0.01" placeholder="80.00" oninput="calculateGross()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Hourly Rate</label>
+                            <input type="number" class="form-input" id="hourlyRate" step="0.01" placeholder="45.00" oninput="calculateGross()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Regular Pay</label>
+                            <input type="number" class="form-input" id="regularPay" step="0.01" readonly style="background: var(--surface-elevated);">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Overtime Hours</label>
+                            <input type="number" class="form-input" id="overtimeHours" step="0.01" placeholder="0.00" oninput="calculateGross()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Overtime Pay</label>
+                            <input type="number" class="form-input" id="overtimePay" step="0.01" readonly style="background: var(--surface-elevated);">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Bonus</label>
+                            <input type="number" class="form-input" id="bonus" step="0.01" placeholder="0.00" oninput="calculateGross()">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" style="font-weight: 700; color: var(--primary-purple);">Gross Pay</label>
+                            <input type="number" class="form-input" id="grossPay" step="0.01" readonly style="background: var(--gradient-soft); font-weight: 700; font-size: 1.1rem;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Federal Taxes -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-landmark"></i>
+                        Federal Taxes
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Federal Income Tax</label>
+                            <input type="number" class="form-input" id="federalTax" step="0.01" placeholder="Auto-calculated">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Social Security (6.2%)</label>
+                            <input type="number" class="form-input" id="socialSecurity" step="0.01" readonly style="background: var(--surface-elevated);">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Medicare (1.45%)</label>
+                            <input type="number" class="form-input" id="medicare" step="0.01" readonly style="background: var(--surface-elevated);">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- State Taxes (Dynamic) -->
+                <div class="form-section" id="stateTaxSection" style="display: none;">
+                    <div class="form-section-title">
+                        <i class="fas fa-map-marker-alt"></i>
+                        State Taxes
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">State Income Tax</label>
+                            <input type="number" class="form-input" id="stateTax" step="0.01" placeholder="Auto-calculated">
+                        </div>
+                        <div class="form-group" id="sdiField" style="display: none;">
+                            <label class="form-label">State Disability Insurance</label>
+                            <input type="number" class="form-input" id="sdi" step="0.01" placeholder="Auto-calculated">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Local Taxes (Dynamic) -->
+                <div class="form-section" id="localTaxSection" style="display: none;">
+                    <div class="form-section-title">
+                        <i class="fas fa-city"></i>
+                        Local Taxes
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">City/Locality</label>
+                            <select class="form-select" id="localJurisdiction">
+                                <option value="">Select city...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Local Income Tax</label>
+                            <input type="number" class="form-input" id="localTax" step="0.01" placeholder="Auto-calculated">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deductions -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-minus-circle"></i>
+                        Deductions
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">401(k) Contribution</label>
+                            <input type="number" class="form-input" id="contribution401k" step="0.01" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Health Insurance</label>
+                            <input type="number" class="form-input" id="healthInsurance" step="0.01" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Dental Insurance</label>
+                            <input type="number" class="form-input" id="dentalInsurance" step="0.01" placeholder="0.00">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PTO -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-umbrella-beach"></i>
+                        PTO Tracking
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Vacation Hours Used</label>
+                            <input type="number" class="form-input" id="vacationUsed" step="0.01" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Sick Hours Used</label>
+                            <input type="number" class="form-input" id="sickUsed" step="0.01" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Personal Hours Used</label>
+                            <input type="number" class="form-input" id="personalUsed" step="0.01" placeholder="0.00">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary -->
+                <div class="form-section" style="background: var(--gradient-soft); border: 2px solid var(--primary-purple);">
+                    <div class="form-section-title" style="color: var(--primary-purple);">
+                        <i class="fas fa-check-circle"></i>
+                        Payment Summary
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.25rem;">Gross Pay</div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);" id="summaryGross">$0.00</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.25rem;">Total Deductions</div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #ef4444;" id="summaryDeductions">$0.00</div>
+                        </div>
+                        <div style="grid-column: 1 / -1;">
+                            <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.25rem;">Net Pay</div>
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--primary-purple);" id="summaryNet">$0.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeGenerator()">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-magic"></i>
+                        Generate Paystub
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Previous Paystubs Modal -->
+    <div class="modal" id="paystubsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Previous Paystubs</div>
+                <button class="close-btn" onclick="closePaystubs()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <input type="text" class="form-input" placeholder="Search paystubs..." id="paystubSearch" oninput="filterPaystubs()">
+            </div>
+
+            <div class="activity-list" id="paystubsList">
+                <div class="activity-item" style="cursor: pointer;" onclick="viewPaystub('PS001')">
+                    <div class="activity-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="activity-details" style="flex: 1;">
+                        <div class="activity-title">Sarah Mitchell - Jan 20, 2025</div>
+                        <div class="activity-time">Net Pay: $4,075.00 • Verified</div>
+                    </div>
+                    <button class="icon-btn">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+
+                <div class="activity-item" style="cursor: pointer;" onclick="viewPaystub('PS002')">
+                    <div class="activity-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="activity-details" style="flex: 1;">
+                        <div class="activity-title">Michael Johnson - Jan 20, 2025</div>
+                        <div class="activity-time">Net Pay: $5,240.00 • Verified</div>
+                    </div>
+                    <button class="icon-btn">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+
+                <div class="activity-item" style="cursor: pointer;" onclick="viewPaystub('PS003')">
+                    <div class="activity-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="activity-details" style="flex: 1;">
+                        <div class="activity-title">Emily Chen - Jan 20, 2025</div>
+                        <div class="activity-time">Net Pay: $3,890.00 • Verified</div>
+                    </div>
+                    <button class="icon-btn">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Employee Modal -->
+    <div class="modal" id="addEmployeeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Add New Employee</div>
+                <button class="close-btn" onclick="closeAddEmployee()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form class="generator-form" onsubmit="addEmployee(event)">
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-user"></i>
+                        Personal Information
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">First Name *</label>
+                            <input type="text" class="form-input" id="empFirstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Last Name *</label>
+                            <input type="text" class="form-input" id="empLastName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">SSN *</label>
+                            <input type="text" class="form-input" id="empSSN" placeholder="XXX-XX-XXXX" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Email *</label>
+                            <input type="email" class="form-input" id="empEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" class="form-input" id="empPhone">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date of Birth *</label>
+                            <input type="date" class="form-input" id="empDOB" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Address -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Address
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label class="form-label">Street Address *</label>
+                            <input type="text" class="form-input" id="empAddress" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">City *</label>
+                            <input type="text" class="form-input" id="empCity" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">State *</label>
+                            <select class="form-select" id="empState" required>
+                                <option value="">Select state...</option>
+                                <option value="CA">California</option>
+                                <option value="NY">New York</option>
+                                <option value="TX">Texas</option>
+                                <option value="FL">Florida</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">ZIP Code *</label>
+                            <input type="text" class="form-input" id="empZIP" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Employment Details -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-briefcase"></i>
+                        Employment Details
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Job Title *</label>
+                            <input type="text" class="form-input" id="empJobTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Department</label>
+                            <input type="text" class="form-input" id="empDepartment">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Hire Date *</label>
+                            <input type="date" class="form-input" id="empHireDate" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Pay Rate *</label>
+                            <input type="number" class="form-input" id="empPayRate" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Pay Frequency *</label>
+                            <select class="form-select" id="empPayFrequency" required>
+                                <option value="weekly">Weekly</option>
+                                <option value="biweekly">Bi-Weekly</option>
+                                <option value="semimonthly">Semi-Monthly</option>
+                                <option value="monthly">Monthly</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Employment Type *</label>
+                            <select class="form-select" id="empType" required>
+                                <option value="full-time">Full-Time</option>
+                                <option value="part-time">Part-Time</option>
+                                <option value="contractor">Contractor</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tax Information -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        Tax Information
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Federal Filing Status *</label>
+                            <select class="form-select" id="empFilingStatus" required>
+                                <option value="single">Single</option>
+                                <option value="married">Married Filing Jointly</option>
+                                <option value="married_separate">Married Filing Separately</option>
+                                <option value="head_of_household">Head of Household</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Federal Allowances</label>
+                            <input type="number" class="form-input" id="empAllowances" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Additional Withholding</label>
+                            <input type="number" class="form-input" id="empAdditionalWithholding" step="0.01" value="0">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddEmployee()">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i>
+                        Add Employee
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Reports Modal -->
+    <div class="modal" id="reportsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Payroll Reports</div>
+                <button class="close-btn" onclick="closeReports()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="form-section">
+                <div class="form-section-title">
+                    <i class="fas fa-calendar"></i>
+                    Select Report Period
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Start Date</label>
+                        <input type="date" class="form-input" id="reportStartDate">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">End Date</label>
+                        <input type="date" class="form-input" id="reportEndDate">
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+                <div class="card" style="cursor: pointer;" onclick="generateReport('payroll-summary')">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-chart-bar"></i>
+                            Payroll Summary
+                        </div>
+                    </div>
+                    <p style="padding: 1rem; color: var(--text-secondary); font-size: 0.875rem;">
+                        Total gross pay, deductions, and net pay by period
+                    </p>
+                </div>
+
+                <div class="card" style="cursor: pointer;" onclick="generateReport('tax-summary')">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-landmark"></i>
+                            Tax Summary
+                        </div>
+                    </div>
+                    <p style="padding: 1rem; color: var(--text-secondary); font-size: 0.875rem;">
+                        Federal, state, and local tax withholdings
+                    </p>
+                </div>
+
+                <div class="card" style="cursor: pointer;" onclick="generateReport('employee-earnings')">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-users"></i>
+                            Employee Earnings
+                        </div>
+                    </div>
+                    <p style="padding: 1rem; color: var(--text-secondary); font-size: 0.875rem;">
+                        Earnings breakdown by employee
+                    </p>
+                </div>
+
+                <div class="card" style="cursor: pointer;" onclick="generateReport('pto-report')">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-umbrella-beach"></i>
+                            PTO Report
+                        </div>
+                    </div>
+                    <p style="padding: 1rem; color: var(--text-secondary); font-size: 0.875rem;">
+                        Vacation, sick, and personal time balances
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Settings</div>
+                <button class="close-btn" onclick="closeSettings()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="generator-form">
+                <!-- Company Information -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-building"></i>
+                        Company Information
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Company Name</label>
+                            <input type="text" class="form-input" id="companyName" value="Diego Enterprises Inc.">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">EIN</label>
+                            <input type="text" class="form-input" id="companyEIN" value="XX-XXXXXXX">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-input" id="companyAddress" value="801 S Hope St 1716, Los Angeles, CA 90017">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Account Settings -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-user-cog"></i>
+                        Account Settings
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" id="userEmail" value="john@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" class="form-input" id="userPhone" value="+1 (555) 123-4567">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subscription -->
+                <div class="form-section" style="background: var(--gradient-soft);">
+                    <div class="form-section-title">
+                        <i class="fas fa-crown"></i>
+                        Subscription Plan
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 700; font-size: 1.1rem; color: var(--text-primary);">Professional Plan</div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">$50/month • 15 paystubs • Premium templates</div>
+                        </div>
+                        <button class="btn btn-primary">
+                            Manage Plan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notifications -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-bell"></i>
+                        Notifications
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+                            <input type="checkbox" checked style="width: 20px; height: 20px;">
+                            <span>Email notifications for new paystubs</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+                            <input type="checkbox" checked style="width: 20px; height: 20px;">
+                            <span>Reward points milestones</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+                            <input type="checkbox" style="width: 20px; height: 20px;">
+                            <span>Marketing updates</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeSettings()">
+                        Cancel
+                    </button>
+                    <button class="btn btn-primary" onclick="saveSettings()">
+                        <i class="fas fa-save"></i>
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API Configuration
+        const API_BASE_URL = 'https://your-api.execute-api.us-east-1.amazonaws.com/prod';
+        const API_ENDPOINTS = {
+            generatePaystub: '/api/paystubs/generate-complete',
+            getEmployees: '/api/employees',
+            addEmployee: '/api/employees',
+            getPaystubs: '/api/paystubs/history',
+            getContinuation: '/api/paystubs/continuation',
+            getDashboard: '/api/dashboard/summary'
+        };
+
+        // Modal Controls
+        function openGenerator() {
+            document.getElementById('generatorModal').classList.add('active');
+            setDefaultDates();
+            loadEmployeesList();
+        }
+
+        function closeGenerator() {
+            document.getElementById('generatorModal').classList.remove('active');
+        }
+
+        function openPaystubs() {
+            document.getElementById('paystubsModal').classList.add('active');
+            loadPaystubsList();
+        }
+
+        function closePaystubs() {
+            document.getElementById('paystubsModal').classList.remove('active');
+        }
+
+        function openAddEmployee() {
+            document.getElementById('addEmployeeModal').classList.add('active');
+        }
+
+        function closeAddEmployee() {
+            document.getElementById('addEmployeeModal').classList.remove('active');
+        }
+
+        function openReports() {
+            document.getElementById('reportsModal').classList.add('active');
+        }
+
+        function closeReports() {
+            document.getElementById('reportsModal').classList.remove('active');
+        }
+
+        function openSettings() {
+            document.getElementById('settingsModal').classList.add('active');
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.remove('active');
+        }
+
+        // Set default dates
+        function setDefaultDates() {
+            const today = new Date();
+            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+            const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            const payDate = new Date(lastDay);
+            payDate.setDate(payDate.getDate() + 5);
+
+            document.getElementById('periodStart').valueAsDate = firstDay;
+            document.getElementById('periodEnd').valueAsDate = lastDay;
+            document.getElementById('payDate').valueAsDate = payDate;
+        }
+
+        // Load employee data
+        function loadEmployeeData() {
+            const employeeId = document.getElementById('employeeSelect').value;
+            if (!employeeId) return;
+
+            // Mock data - would fetch from API in production
+            const employees = {
+                '1': { state: 'CA', rate: 45.00, hours: 80 },
+                '2': { state: 'NY', rate: 55.00, hours: 80 },
+                '3': { state: 'TX', rate: 42.00, hours: 80 }
+            };
+
+            const emp = employees[employeeId];
+            document.getElementById('stateSelect').value = emp.state;
+            document.getElementById('hourlyRate').value = emp.rate;
+            document.getElementById('regularHours').value = emp.hours;
+            
+            updateStateFields();
+            calculateGross();
+        }
+
+        // Update state-specific fields
+        function updateStateFields() {
+            const state = document.getElementById('stateSelect').value;
+            const stateTaxSection = document.getElementById('stateTaxSection');
+            const localTaxSection = document.getElementById('localTaxSection');
+            const sdiField = document.getElementById('sdiField');
+            const localJurisdiction = document.getElementById('localJurisdiction');
+
+            // No-tax states
+            const noTaxStates = ['AK', 'FL', 'NV', 'SD', 'TN', 'TX', 'WA', 'WY'];
+            
+            // SDI states
+            const sdiStates = ['CA', 'NY', 'NJ', 'RI', 'HI'];
+            
+            // Local tax jurisdictions
+            const localTaxStates = {
+                'NY': ['New York City', 'Yonkers'],
+                'PA': ['Philadelphia', 'Pittsburgh'],
+                'OH': ['Columbus', 'Cleveland', 'Cincinnati'],
+                'MI': ['Detroit']
+            };
+
+            // Show/hide state tax
+            if (noTaxStates.includes(state)) {
+                stateTaxSection.style.display = 'none';
+            } else {
+                stateTaxSection.style.display = 'block';
+            }
+
+            // Show/hide SDI
+            if (sdiStates.includes(state)) {
+                sdiField.style.display = 'block';
+            } else {
+                sdiField.style.display = 'none';
+            }
+
+            // Show/hide local tax
+            if (localTaxStates[state]) {
+                localTaxSection.style.display = 'block';
+                localJurisdiction.innerHTML = '<option value="">Select city...</option>';
+                localTaxStates[state].forEach(city => {
+                    localJurisdiction.innerHTML += `<option value="${city}">${city}</option>`;
+                });
+            } else {
+                localTaxSection.style.display = 'none';
+            }
+        }
+
+        // Calculate gross pay
+        function calculateGross() {
+            const regularHours = parseFloat(document.getElementById('regularHours').value) || 0;
+            const hourlyRate = parseFloat(document.getElementById('hourlyRate').value) || 0;
+            const overtimeHours = parseFloat(document.getElementById('overtimeHours').value) || 0;
+            const bonus = parseFloat(document.getElementById('bonus').value) || 0;
+
+            const regularPay = regularHours * hourlyRate;
+            const overtimePay = overtimeHours * hourlyRate * 1.5;
+            const grossPay = regularPay + overtimePay + bonus;
+
+            document.getElementById('regularPay').value = regularPay.toFixed(2);
+            document.getElementById('overtimePay').value = overtimePay.toFixed(2);
+            document.getElementById('grossPay').value = grossPay.toFixed(2);
+
+            // Calculate FICA taxes
+            const socialSecurity = grossPay * 0.062;
+            const medicare = grossPay * 0.0145;
+
+            document.getElementById('socialSecurity').value = socialSecurity.toFixed(2);
+            document.getElementById('medicare').value = medicare.toFixed(2);
+
+            updateSummary();
+        }
+
+        // Update summary
+        function updateSummary() {
+            const grossPay = parseFloat(document.getElementById('grossPay').value) || 0;
+            const federalTax = parseFloat(document.getElementById('federalTax').value) || 0;
+            const socialSecurity = parseFloat(document.getElementById('socialSecurity').value) || 0;
+            const medicare = parseFloat(document.getElementById('medicare').value) || 0;
+            const stateTax = parseFloat(document.getElementById('stateTax').value) || 0;
+            const contribution401k = parseFloat(document.getElementById('contribution401k').value) || 0;
+            const healthInsurance = parseFloat(document.getElementById('healthInsurance').value) || 0;
+            const dentalInsurance = parseFloat(document.getElementById('dentalInsurance').value) || 0;
+
+            const totalDeductions = federalTax + socialSecurity + medicare + stateTax + contribution401k + healthInsurance + dentalInsurance;
+            const netPay = grossPay - totalDeductions;
+
+            document.getElementById('summaryGross').textContent = `${grossPay.toFixed(2)}`;
+            document.getElementById('summaryDeductions').textContent = `${totalDeductions.toFixed(2)}`;
+            document.getElementById('summaryNet').textContent = `${netPay.toFixed(2)}`;
+        }
+
+        // Generate paystub
+        function generatePaystub(event) {
+            event.preventDefault();
+            
+            // Show loading
+            const btn = event.target.querySelector('button[type="submit"]');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<div class="loading"></div> Generating...';
+            btn.disabled = true;
+
+            // Simulate API call
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> Generated!';
+                setTimeout(() => {
+                    closeGenerator();
+                    btn.innerHTML = originalContent;
+                    btn.disabled = false;
+                    
+                    // Show success message
+                    alert('Paystub generated successfully! 🎉\n\n+10 Reward Points\nPDF ready for download');
+                }, 1000);
+            }, 2000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate stats on load
+            const statValues = document.querySelectorAll('.stat-value');
+            statValues.forEach(stat => {
+                stat.style.opacity = '0';
+                stat.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    stat.style.transition = 'all 0.6s ease';
+                    stat.style.opacity = '1';
+                    stat.style.transform = 'translateY(0)';
+                }, 100);
+            });
+
+            // Animate progress bar
+            const progressFill = document.querySelector('.progress-fill');
+            setTimeout(() => {
+                progressFill.style.width = progressFill.style.width;
+            }, 500);
+        });
+    </script>
+</body>
+</html>
